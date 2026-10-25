@@ -9,7 +9,7 @@ const ROOT='https://kolnovel.com'
 const SERIES='/series/البداية-بعد-النهاية/'
 export const KolNovelInfo: SourceInfo={
  name:'KolNovel (Experimental)',
- version:'0.1.2',
+ version:'0.1.3',
  description:'Arabic novel proof of concept. Not yet verified in Paperback 0.8.',
  author:'imtogas / community',
  icon:'icon.svg',
@@ -73,22 +73,48 @@ export class KolNovel implements MangaProviding, ChapterProviding, SearchResults
   })})
  }
  async getChapters(mangaId:string):Promise<Chapter[]>{
-  const $=await this.fetchDocument(mangaId)
+  // KolNovel groups chapter rows by volume. The landing page only exposes two teaser links.
+  const volumes=[
+   'المجلد 1 [ السنوات المبكرة ]','المجلد 2 [ أفاق جديدة ]',
+   'المجلد 3 [ المصير ]','المجلد 4 [ حافة الأفق ]',
+   'المجلد 5 [ التقارب ]','المجلد 6 [ التعالي ]',
+   'المجلد 7 [ الإنقسام ]','فصول خاصة [ منظور إيلي ]',
+   'المجلد 8 [ الصعود ]','المجلد 8.5: قصة جانبية',
+   'المجلد 9 [ الحساب ]','الفصول','المجلد 10 [ القصاص ]',
+   'المجلد 11','المجلد 12','رواية الكاتب الجديدة',
+   'المجلد 12.5 الإضافي [منظور إيلي]'
+  ]
   const chapters:Chapter[]=[]
   const seen=new Set<string>()
-  $('a[href]').each((_,el)=>{
-   const href=$(el).attr('href')||'',name=$(el).text().trim()
-   if(!/(?:الفصل|فصل)\s*[\d٠-٩]+/.test(name)||!href)return
-   try {
-    const url=absolute(href)
-    if(seen.has(url))return
+  let fallback=1
+  const add=($:any)=>{
+   $('a[href]').each((_:any,el:any)=>{
+    const href=String($(el).attr('href')||'')
+    const name=String($(el).text()||'').replace(/\\s+/g,' ').trim()
+    if(!href || !/(?:الفصل|فصل)\\s*[\\d٠-٩]+/.test(name)) return
+    let url:string
+    try{url=absolute(href)}catch{return}
+    if(seen.has(url) || url.indexOf('/series/')>=0) return
     seen.add(url)
-    const m=name.match(/[\d٠-٩]+/)
-    const number=m?Number(m[0].replace(/[٠-٩]/g,c=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(c)))):chapters.length+1
-    chapters.push(App.createChapter({id:url,name,chapNum:number,langCode:'🇸🇦'}))
-   }catch{}
-  })
-  return chapters
+    const m=name.match(/(?:الفصل|فصل)\\s*([\\d٠-٩]+)/)
+    const num=m?Number(m[1].replace(/[٠-٩]/g,(digit:string)=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)))):fallback++
+    chapters.push(App.createChapter({id:url,name,chapNum:num,langCode:'🇸🇦'}))
+   })
+  }
+  add(await this.fetchDocument(mangaId))
+  // Each query loads one volume; fetch a second page for long volumes.
+  for(const volume of volumes){
+   for(let page=1;page<=2;page++){
+    const separator=mangaId.includes('?')?'&':'?'
+    const url=mangaId+separator+'chapter_volume='+encodeURIComponent(volume)+'&chapter_page='+page
+    try{
+     const before=chapters.length
+     add(await this.fetchDocument(url))
+     if(chapters.length===before)break
+    }catch{break}
+   }
+  }
+  return chapters.sort((a,b)=>a.chapNum-b.chapNum)
  }
  async getChapterDetails(mangaId:string,chapterId:string):Promise<ChapterDetails>{
   const $=await this.fetchDocument(chapterId)
