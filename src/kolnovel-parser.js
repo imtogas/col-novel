@@ -1,7 +1,7 @@
 /**
  * Site-agnostic HTML extraction helpers for the experimental KolNovel adapter.
- * NOT an installable Paperback extension. All selectors require validation
- * against a real, authorized KolNovel page before release.
+ * NOT an installable Paperback extension. The #kol_content selector was confirmed from a user-provided chapter HTML snapshot.
+ * Remaining source methods still need integration and on-device validation.
  */
 export function decodeEntities(s = '') {
   const entities = {amp:'&',lt:'<',gt:'>',quot:'"',apos:"'",nbsp:' ',hellip:'…',mdash:'—',laquo:'«',raquo:'»'};
@@ -52,8 +52,10 @@ export function extractChapterLinks(html = '', baseUrl = 'https://kolnovel.com/'
 }
 export function extractChapterText(html = '') {
   const source = String(html);
-  // Generic candidates, not verified for KolNovel's live markup.
+  // Confirmed on KolNovel chapter 406 saved HTML: div#kol_content.epcontent.entry-content.
+  // Generic selectors remain fallbacks.
   const selectors = [
+    /<div\\b[^>]*\\bid\\s*=\\s*["']kol_content["'][^>]*>([\\s\\S]*?)<\\/div>/i,
     /<(?:div|article|section)\b[^>]*(?:id|class)\s*=\s*["'][^"']*(?:chapter-content|entry-content|reading-content|text-content)[^"']*["'][^>]*>([\s\S]*?)<\/(?:div|article|section)>/i,
     /<article\b[^>]*>([\s\S]*?)<\/article>/i
   ];
