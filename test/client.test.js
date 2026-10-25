@@ -18,3 +18,10 @@ test('client reports missing body instead of silently succeeding',async()=>{
  const client=new KolNovelClient(async()=>({ok:true,headers:{get:()=> 'text/html'},text:async()=>'<title>404</title>'}));
  await assert.rejects(()=>client.chapter('https://kolnovel.com/nope/'),/body not found/);
 });
+
+test('chapterPages renders multiple Arabic SVG pages from a chapter',async()=>{
+ const client=new KolNovelClient(ok);
+ const result=await client.chapterPages('https://kolnovel.com/chapter/',{maxLines:2,maxCharacters:12});
+ assert.ok(result.pages.length>=1);
+ assert.ok(result.pages.every(p=>p.startsWith('data:image/svg+xml')));
+});
