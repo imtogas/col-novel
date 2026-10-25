@@ -23,7 +23,7 @@ export function extractSeriesChapters(html,base=ROOT){
  for(const m of String(html).matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)){
   const href=m[1].match(/\bhref\s*=\s*["']([^"']+)["']/i)?.[1];
   const url=href&&safeUrl(href,base), label=toText(m[2]).trim();
-  if(!url||seen.has(url)||!/\bالفصل\s*[\d٠-٩]+/u.test(label))continue;
+  if(!url||seen.has(url)||!/الفصل\s*[\d٠-٩]+/u.test(label))continue;
   seen.add(url);
   out.push({title:label,url});
  }
