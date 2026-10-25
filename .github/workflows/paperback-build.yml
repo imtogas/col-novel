@@ -41,6 +41,15 @@ jobs:
           echo 'Top-level generated directories:'
           ls -la ..
           ls -la .
+      - name: Inspect generated outputs including hidden paths
+        if: always()
+        run: |
+          echo 'Changed and untracked files:'
+          git status --short --untracked-files=all | head -100
+          echo 'Directories excluding dependencies:'
+          find .. -maxdepth 5 -type d -not -path '*/node_modules*' -not -path '*/.git*' | sort | head -130
+          echo 'Bundle-like files:'
+          find .. -type f \( -name '*.js' -o -name '*.json' -o -name '*.html' -o -name '*.pb' \) -not -path '*/node_modules/*' -not -path '*/.git/*' | sort | tail -100
       - name: Save bundle diagnostics and output
         if: always()
         uses: actions/upload-artifact@v4
