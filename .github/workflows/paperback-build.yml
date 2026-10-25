@@ -1,0 +1,24 @@
+name: Paperback 0.8 build probe
+on:
+  push:
+    paths:
+      - "paperback/**"
+      - ".github/workflows/paperback-build.yml"
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: paperback
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install Paperback 0.8 toolchain
+        run: npm install --no-audit --no-fund
+      - name: TypeScript compilation check
+        run: npx tsc --noEmit
+      - name: Attempt source bundle
+        run: npm run bundle
