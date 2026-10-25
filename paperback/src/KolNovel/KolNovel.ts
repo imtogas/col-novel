@@ -9,7 +9,7 @@ const ROOT='https://kolnovel.com'
 const SERIES='/series/البداية-بعد-النهاية/'
 export const KolNovelInfo: SourceInfo={
  name:'KolNovel (Experimental)',
- version:'0.1.1',
+ version:'0.1.2',
  description:'Arabic novel proof of concept. Not yet verified in Paperback 0.8.',
  author:'imtogas / community',
  icon:'icon.svg',
