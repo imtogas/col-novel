@@ -22,3 +22,17 @@ jobs:
         run: npx tsc --noEmit
       - name: Attempt source bundle
         run: npm run bundle
+      - name: List bundle output files
+        run: |
+          echo "Bundle output candidates:"
+          find . -maxdepth 5 -type f \( -name '*.pb' -o -name '*.json' -o -name '*.js' -o -name '*.zip' \) -not -path './node_modules/*' -not -path './.git/*' | head -100
+      - name: Save bundle output for inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: kolnovel-paperback-bundle
+          path: |
+            paperback/.dist/
+            paperback/dist/
+            paperback/build/
+            paperback/lib/
+          if-no-files-found: warn
