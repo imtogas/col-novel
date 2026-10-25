@@ -1,0 +1,19 @@
+{
+  "name": "kolnovel-paperback-source",
+  "version": "0.1.0",
+  "repositoryName": "KolNovel Experimental",
+  "description": "Paperback 0.8 KolNovel prototype, not verified",
+  "scripts": {
+    "bundle": "paperback bundle",
+    "serve": "paperback serve",
+    "test": "paperback test"
+  },
+  "dependencies": {
+    "@paperback/toolchain": "^0.8.7",
+    "@paperback/types": "^0.8.7",
+    "cheerio": "^1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5"
+  }
+}
