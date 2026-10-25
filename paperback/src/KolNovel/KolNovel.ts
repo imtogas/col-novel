@@ -18,7 +18,7 @@ export const KolNovelInfo: SourceInfo={
  intents:SourceIntents.MANGA_CHAPTERS
 }
 function absolute(href:string):string {
- const u=new URL(href,ROOT)
+ const u=new URL(href,ROOT+'/')
  if(u.protocol!=='https:' || u.hostname!=='kolnovel.com') throw Error('Invalid host')
  return u.href
 }
