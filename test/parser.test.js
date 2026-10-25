@@ -18,3 +18,9 @@ test('recognizes KolNovel-style chapter URL supplied for integration',()=>{
   const html='<a href="'+href+'">فصل 187</a>';
   assert.deepEqual(extractChapterLinks(html),[{title:'فصل 187',url:new URL(href,'https://kolnovel.com/').href}]);
 });
+
+test('KolNovel saved chapter markup uses #kol_content',()=>{
+ const text='مثال من نص عربي تجريبي لصفحة فصل طويل وبه عدة جمل لاختبار أن قراءة النص من العنصر المحدد تعمل.';
+ const html='<div id="kol_content" class="epcontent entry-content" data-kol-reader-content itemprop="text"><p>&nbsp;</p><p>'+text+'</p></div>';
+ assert.equal(extractChapterText(html),text);
+});
