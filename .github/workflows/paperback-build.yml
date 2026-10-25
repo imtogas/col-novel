@@ -36,7 +36,11 @@ jobs:
       - name: List bundle output files
         if: always()
         run: |
-          find .. -maxdepth 4 -type f -not -path '*/node_modules/*' -not -path '*/.git/*' | sort | head -150
+          pwd
+          find .. -maxdepth 5 -type f -not -path '*/node_modules/*' -not -path '*/.git/*' | sort | head -200
+          echo 'Top-level generated directories:'
+          ls -la ..
+          ls -la .
       - name: Save bundle diagnostics and output
         if: always()
         uses: actions/upload-artifact@v4
@@ -51,4 +55,12 @@ jobs:
             .dist/
             dist/
             build/
+            paperback/0.8/
+            paperback/repository/
+            paperback/public/
+            0.8/
+            repository/
+            public/
+            index.html
+            paperback/index.html
           if-no-files-found: warn
