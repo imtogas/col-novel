@@ -1,0 +1,11 @@
+{
+  "name": "kolnovel-paperback",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Experimental KolNovel HTML parsing tests for future Paperback 0.8 integration",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "check": "node --check src/kolnovel-parser.js"
+  }
+}
