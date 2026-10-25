@@ -1,25 +1,24 @@
-# KolNovel × Paperback 0.8
+# KolNovel – Paperback 0.8 prototype
 
-A community experiment to integrate [KolNovel](https://kolnovel.com/) (Arabic text novels) with Paperback **v0.8.11-r1**.
+Experimental project for reading Arabic KolNovel text novels in Paperback **v0.8.11-r1**.
 
-## Status
+**Current status: development prototype, NOT an installable Paperback repository.** Do not paste this GitHub URL into Paperback's Repository Base URL field. The site was not accessible to the development environment for live HTML validation.
 
-🚧 **Prototype / not installable yet.** This repository currently has no compiled Paperback extension or valid source repository index.
+## Added now
 
-Paperback primarily renders comics/manga pages as images, whereas KolNovel serves text chapters. A working source needs to retrieve novel metadata and chapters, render Arabic text into readable image pages (or use a supported text-reading interface), and then produce a Paperback 0.8-compatible extension + repository manifest. Do not add the GitHub repository URL as a Paperback source yet.
+- `src/kolnovel-parser.js`: Arabic-safe HTML text extraction, title parsing, tentative chapter-list and chapter-text parsing
+- `test/parser.test.js`: synthetic fixtures and regression tests (not tests of the live website)
+- `package.json`: run `npm test` with Node 22
+- `.github/workflows/tests.yml`: GitHub Actions parser test workflow
 
-## Development checklist
+## Remaining before it can work on iPhone
 
-- [ ] Confirm KolNovel public URLs and permitted access requirements
-- [ ] Inspect the current novel index, search, chapters and chapter HTML
-- [ ] Implement resilient selectors and Arabic right-to-left text processing
-- [ ] Check if Paperback 0.8 can render long-form text; otherwise render chapters to image pages
-- [ ] Compile against the Paperback 0.8 source API and test on-device
-- [ ] Generate repository index and deploy with GitHub Pages
-- [ ] Document a verified `Repository Base URL`
+1. Inspect representative public KolNovel book and chapter HTML to validate selectors.
+2. Adapt a real Paperback 0.8 extension with search, book details, chapter list and reading pages.
+3. Resolve Paperback's image-page reader vs KolNovel's text chapters (likely convert text into pages).
+4. Compile and test a working extension on Paperback 0.8.11-r1.
+5. Publish the built extension and repository manifest via GitHub Pages and verify its installation link.
 
-## User setup
+No credentials, private session tokens, scraped books or copyrighted chapter text should be committed.
 
-Once a release is built and verified, the repository base URL will be listed here. Until then, **no installation steps are available**.
-
-This is an independent project and is not affiliated with KolNovel or Paperback. Access only works you are entitled to read, and respect site usage rules.
+Independent experiment; not affiliated with either KolNovel or Paperback.
