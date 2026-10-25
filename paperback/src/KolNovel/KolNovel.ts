@@ -9,7 +9,7 @@ const ROOT='https://kolnovel.com'
 const SERIES='/series/البداية-بعد-النهاية/'
 export const KolNovelInfo: SourceInfo={
  name:'KolNovel (Experimental)',
- version:'0.1.0',
+ version:'0.1.1',
  description:'Arabic novel proof of concept. Not yet verified in Paperback 0.8.',
  author:'imtogas / community',
  icon:'icon.svg',
@@ -18,9 +18,17 @@ export const KolNovelInfo: SourceInfo={
  intents:SourceIntents.MANGA_CHAPTERS
 }
 function absolute(href:string):string {
- const u=new URL(href,ROOT+'/')
- if(u.protocol!=='https:' || u.hostname!=='kolnovel.com') throw Error('Invalid host')
- return u.href
+ const raw=href.trim()
+ if(!raw) throw Error('Empty URL')
+ if(raw.startsWith('//')) throw Error('Protocol-relative URLs are not allowed')
+ if(/^https?:\/\//i.test(raw)){
+  if(!/^https:\/\/kolnovel\.com(?=\/|$|\?|#)/i.test(raw)) throw Error('Invalid host')
+  return raw
+ }
+ if(/^[a-z][a-z0-9+.-]*:/i.test(raw)) throw Error('Invalid URL scheme')
+ if(raw.startsWith('#')) throw Error('Fragment-only URL')
+ const path=raw.startsWith('/')?raw:'/'+raw
+ return ROOT+path
 }
 function escapeXml(text:string):string {
  return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
