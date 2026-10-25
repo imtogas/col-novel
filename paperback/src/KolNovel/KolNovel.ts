@@ -12,7 +12,7 @@ export const KolNovelInfo: SourceInfo={
  version:'0.1.0',
  description:'Arabic novel proof of concept. Not yet verified in Paperback 0.8.',
  author:'imtogas / community',
- icon:'icon.png',
+ icon:'icon.svg',
  contentRating:ContentRating.EVERYONE,
  websiteBaseURL:ROOT,
  intents:SourceIntents.MANGA_CHAPTERS
