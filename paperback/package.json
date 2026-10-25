@@ -6,14 +6,16 @@
   "scripts": {
     "bundle": "paperback bundle",
     "serve": "paperback serve",
-    "test": "paperback test"
+    "test": "paperback test",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@paperback/toolchain": "^0.8.7",
     "@paperback/types": "^0.8.7",
-    "cheerio": "^1.0.0"
+    "cheerio": "1.0.0-rc.12"
   },
   "devDependencies": {
-    "typescript": "^4.9.5"
+    "typescript": "~5.6.3",
+    "@types/node": "~20.17.6"
   }
 }
