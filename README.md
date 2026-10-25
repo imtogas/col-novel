@@ -34,3 +34,14 @@ Tests are mock/fixture tests; none establishes that the live website permits fet
 **Do not paste `https://github.com/imtogas/col-novel` into Paperback's repository field: it is not an installable source.**
 
 Independent experimental integration, unaffiliated with Paperback or KolNovel. Respect the website's content rights and access controls.
+
+## Paperback 0.8 TypeScript implementation (new)
+
+An experimental Paperback SDK source now lives in [paperback/](./paperback). It includes:
+- `getSearchResults` (currently only a known-series demo, not site-wide searching)
+- `getMangaDetails` for HTML title/cover metadata
+- `getChapters` for chapter anchors on the series page
+- `getChapterDetails` for `#kol_content` and experimental SVG text image pages
+- GitHub Action `Paperback 0.8 build probe` to attempt TypeScript checking and bundling
+
+**Not yet installable**: this source is not a tested or published extension; the SVG image URL scheme may be rejected by the iOS app and the build results have not been verified. A real icon, proper repository output and in-app test are still required. Do not claim end-to-end functionality.
