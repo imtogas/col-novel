@@ -1,24 +1,36 @@
-# KolNovel – Paperback 0.8 prototype
+# KolNovel for Paperback 0.8 — development project
 
-Experimental project for reading Arabic KolNovel text novels in Paperback **v0.8.11-r1**.
+**Status: parser and chapter-client prototype; NOT installable in Paperback.**
 
-**Current status: development prototype, NOT an installable Paperback repository.** Do not paste this GitHub URL into Paperback's Repository Base URL field. The site was not accessible to the development environment for live HTML validation.
+This public code is being developed for the user's Paperback `0.8.11-r1` on iOS. It currently runs as standalone JavaScript modules, *not* as a Paperback source package.
 
-## Added now
+## Verified from an uploaded chapter 406 source snapshot
 
-- `src/kolnovel-parser.js`: Arabic-safe HTML text extraction, title parsing, tentative chapter-list and chapter-text parsing
-- `test/parser.test.js`: synthetic fixtures and regression tests (not tests of the live website)
-- `package.json`: run `npm test` with Node 22
-- `.github/workflows/tests.yml`: GitHub Actions parser test workflow
+- Arabic and right-to-left document
+- Chapter text inside `#kol_content`
+- Previous/next chapter links are labeled `السابق` and `التالي`
+- `الفصول` leads back to the `/series/` URL
 
-## Remaining before it can work on iPhone
+The test HTML deliberately uses invented placeholder paragraphs instead of redistributing the book's actual text.
 
-1. Inspect representative public KolNovel book and chapter HTML to validate selectors.
-2. Adapt a real Paperback 0.8 extension with search, book details, chapter list and reading pages.
-3. Resolve Paperback's image-page reader vs KolNovel's text chapters (likely convert text into pages).
-4. Compile and test a working extension on Paperback 0.8.11-r1.
-5. Publish the built extension and repository manifest via GitHub Pages and verify its installation link.
+## Working development components
 
-No credentials, private session tokens, scraped books or copyrighted chapter text should be committed.
+- `src/kolnovel-parser.js`: title, generic chapter anchors, text extraction
+- `src/kolnovel-navigation.js`: previous/next and chapter-list links
+- `src/kolnovel-client.js`: HTTP fetch wrapper to return chapter title, body and navigation or errors
+- `test/`: unit tests and a copyright-safe HTML structural fixture
+- `npm test`: run locally with Node 22 (also configured for GitHub Actions)
 
-Independent experiment; not affiliated with either KolNovel or Paperback.
+Tests are mock/fixture tests; none establishes that the live website permits fetching from Paperback, and GitHub Actions results require verification.
+
+## Remaining before installation
+
+1. Verify series and search page HTML and finalize selectors for all novels
+2. Create and compile a **Paperback 0.8** source with the extension SDK, not merely the standalone client
+3. Solve the **text novel vs manga image-page reader** rendering mismatch
+4. Confirm compatible network requests and reading behavior **on iPhone**
+5. Only then publish GitHub Pages manifest and verify the Repository Base URL in-app
+
+**Do not paste `https://github.com/imtogas/col-novel` into Paperback's repository field: it is not an installable source.**
+
+Independent experimental integration, unaffiliated with Paperback or KolNovel. Respect the website's content rights and access controls.
