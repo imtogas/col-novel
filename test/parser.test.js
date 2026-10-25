@@ -12,3 +12,9 @@ test('extracts common WordPress-like chapter markup',()=>{
   assert.equal(extractChapterText('<div class="entry-content"><p>'+body+'</p></div>'),body);
 });
 test('does not fabricate chapter content when selectors fail',()=>assert.equal(extractChapterText('<html><body>hello</body></html>'),''));
+
+test('recognizes KolNovel-style chapter URL supplied for integration',()=>{
+  const href='/shaag24البداية-بعد-النهايةz435ggye-187678/';
+  const html='<a href="'+href+'">فصل 187</a>';
+  assert.deepEqual(extractChapterLinks(html),[{title:'فصل 187',url:new URL(href,'https://kolnovel.com/').href}]);
+});
