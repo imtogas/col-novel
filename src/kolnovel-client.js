@@ -1,5 +1,6 @@
 import {extractTitle,extractChapterText} from './kolnovel-parser.js';
 import {extractNavigation,extractSeriesChapters} from './kolnovel-navigation.js';
+import {paginateArabicText} from './text-pages.js';
 const ORIGIN='https://kolnovel.com';
 function allowed(input) {
  const u=new URL(input,ORIGIN);
@@ -25,6 +26,10 @@ export class KolNovelClient {
   const text=extractChapterText(html);
   if(!text)throw new Error('Chapter body not found: KolNovel markup may have changed');
   return {url:address,title:extractTitle(html),text,navigation:extractNavigation(html,address)};
+ }
+ async chapterPages(url, options = {}) {
+  const chapter = await this.chapter(url);
+  return {...chapter, pages: paginateArabicText(chapter.text, {title: chapter.title, ...options})};
  }
  async series(url) {
   const {address,html}=await this.load(url);
